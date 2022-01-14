@@ -5,7 +5,7 @@ import top.tonxin.www.strategy.FireStrategy;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 
-public class Player {
+public class Player extends AbstractGameObject{
     public static final int SPEED = 5;     //移动速度
     private int x;
     private int y;

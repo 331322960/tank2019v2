@@ -8,7 +8,7 @@ import java.awt.*;
  * @Description: top.tonxin.www
  * @version: 1.0
  */
-public class Wall {
+public class Wall extends AbstractGameObject{
     private int x,y,w,h;
 
     public Wall(int x, int y, int w, int h) {
@@ -18,7 +18,7 @@ public class Wall {
         this.h = h;
     }
 
-    private void paint(Graphics g){
+    public void paint(Graphics g){
         Color c = g.getColor();
         g.setColor(Color.YELLOW);
         g.fillRect(x,y,w,h);

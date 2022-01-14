@@ -3,7 +3,7 @@ package top.tonxin.www;
 import java.awt.*;
 import java.util.Random;
 
-public class Tank {
+public class Tank extends AbstractGameObject{
     public static final int SPEED = 5;     //移动速度
     private int x;
     private int y;

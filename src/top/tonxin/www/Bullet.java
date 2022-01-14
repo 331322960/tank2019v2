@@ -8,7 +8,7 @@ import java.awt.*;
  * @Description: top.tonxin.tank
  * @version: 1.0
  */
-public class Bullet {
+public class Bullet extends AbstractGameObject{
     public static final int SPEED = 10;
     private int x,y;
     private Dir dir;

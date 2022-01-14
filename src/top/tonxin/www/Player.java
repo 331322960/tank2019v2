@@ -1,10 +1,9 @@
-package top.tonxin.tank;
+package top.tonxin.www;
 
-import javax.imageio.ImageIO;
+import top.tonxin.www.strategy.FireStrategy;
+
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 
 public class Player {
     public static final int SPEED = 5;     //移动速度
@@ -20,6 +19,23 @@ public class Player {
         this.x = x;
         this.y = y;
         this.dir = dir;
+        this.group = group;
+        this.initFireStrategy();
+    }
+
+    public Dir getDir() {
+        return dir;
+    }
+
+    public void setDir(Dir dir) {
+        this.dir = dir;
+    }
+
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
         this.group = group;
     }
 
@@ -162,10 +178,21 @@ public class Player {
         }
     }
 
+    //读取策略模式
+    FireStrategy strategy = null;
+    private void initFireStrategy(){
+        /*ClassLoader loader = Player.class.getClassLoader();*/
+        String className = PropertMgr.get("tankFireStrategy");
+        try {
+            /*Class clazz = loader.loadClass("top.tonxin.www.strategy."+className);    //效果等同于Class.forName */
+            Class clazz = Class.forName("top.tonxin.www.strategy."+className);
+            strategy = (FireStrategy) (clazz.getDeclaredConstructor().newInstance());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     private void fire(){
-        int bX = x + ResourceMgr.goodTankD.getWidth()/2 - ResourceMgr.bulletD.getWidth()/2;
-        int bY = y + ResourceMgr.goodTankD.getHeight()/2 - ResourceMgr.bulletD.getHeight()/2;
-        TankFrame.INSTANCE.add(new Bullet(bX,bY,dir,group));
+        strategy.fire(this);
     }
 
     /*坦克消亡*/

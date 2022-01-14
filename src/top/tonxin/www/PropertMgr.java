@@ -1,6 +1,5 @@
-package top.tonxin.tank;
+package top.tonxin.www;
 
-import javax.swing.*;
 import java.io.IOException;
 import java.util.Properties;
 

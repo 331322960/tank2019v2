@@ -1,10 +1,6 @@
-package top.tonxin.tank;
+package top.tonxin.www;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.Random;
 
 public class Tank {

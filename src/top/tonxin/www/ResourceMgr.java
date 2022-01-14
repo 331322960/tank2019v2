@@ -1,4 +1,4 @@
-package top.tonxin.tank;
+package top.tonxin.www;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;

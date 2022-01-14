@@ -1,3 +1,4 @@
 initTankCount=5
 ganeWitdh=600
 gameHeight=480
+tankFireStrategy=DefaultFireStrategy

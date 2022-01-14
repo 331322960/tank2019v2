@@ -1,11 +1,10 @@
-package top.tonxin.tank;
+package top.tonxin.www;
 
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 
 public class TankFrame extends Frame {
     private Player myTank;

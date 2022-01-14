@@ -1,4 +1,4 @@
-package top.tonxin.tank;
+package top.tonxin.www;
 
 public class Main {
     public static void main(String[] args) {

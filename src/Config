@@ -1,4 +1,8 @@
 initTankCount=5
-ganeWitdh=600
+gameWitdh=600
 gameHeight=480
+
+#tank fire strategy
 tankFireStrategy=DefaultFireStrategy
+colliders=BulletTankCollider,BulletWallCollider,TankWallCollider
+#,TankTankCollider

@@ -1,5 +1,5 @@
 package top.tonxin.www;
-
+import top.tonxin.www.chainofresponsibility.ColliderChain;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -8,6 +8,7 @@ import java.util.List;
 
 public class TankFrame extends Frame {
     private Player myTank;
+    ColliderChain chain = new ColliderChain();
     List<AbstractGameObject> objects;
     public static final TankFrame INSTANCE = new TankFrame();
     public static final int GAME_WIDTH = 800, GAME_HEIGHT = 600;            //游戏窗口高度和宽度
@@ -21,36 +22,51 @@ public class TankFrame extends Frame {
         //监听键盘
         this.addKeyListener(new TankKeyListener());
         initGameObjects();
-
     }
 
     /*初始化*/
     private void initGameObjects() {
         myTank = new Player(100, 100, Dir.D, Group.GOOD);
-        objects =new ArrayList<>();
         //从配置文件读取
-        int tankCount =Integer.parseInt(PropertMgr.get("initTankCount"));
+        objects = new ArrayList<>();
+        int tankCount =Integer.parseInt(PropertyMgr.get("initTankCount"));
         for (int i = 0; i < tankCount; i++) {
             this.add(new Tank(200 + 50 * i, 200, Dir.D, Group.BAD));
         }
-        this.add(new Wall(200,200,200,300));
+        this.add(new Wall(150,150,200,50));
     }
+
 
     public void add(AbstractGameObject go) {
         objects.add(go);
     }
 
+
     @Override
     public void paint(Graphics g) {
         Color c = g.getColor();
         g.setColor(Color.WHITE);
+        g.drawString("objects：" + objects.size(), 10, 50);
         /*g.drawString("bullets：" + bullets.size(), 10, 50);
         g.drawString("enemies：" + tanks.size(), 10, 70);
         g.drawString("explodes：" + explodes.size(), 10, 90);*/
         g.setColor(c);
         myTank.paint(g);
         for (int i = 0; i < objects.size(); i++) {
-            objects.get(i).paint(g);
+            if(!objects.get(i).isLive()){
+                objects.remove(i);
+                break;
+            }
+            AbstractGameObject go1 = objects.get(i);
+            for (int j = 0; j < objects.size(); j++) {
+                AbstractGameObject go2 = objects.get(j);
+                chain.collide(go1,go2);
+            }
+            /*判断是是否活着*/
+            if (objects.get(i).isLive()){
+                objects.get(i).paint(g);
+            }
+
         }
         /*for (int i = 0; i < tanks.size(); i++) {
             if (!tanks.get(i).isLive()) {

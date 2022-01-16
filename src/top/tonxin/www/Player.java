@@ -64,7 +64,7 @@ public class Player extends AbstractGameObject{
     }
 
     public void paint(Graphics g) {
-        if (!live) return;
+        if (!this.live) return;
         if(group == Group.GOOD) {
             switch (dir) {
                 case R:
@@ -182,7 +182,7 @@ public class Player extends AbstractGameObject{
     FireStrategy strategy = null;
     private void initFireStrategy(){
         /*ClassLoader loader = Player.class.getClassLoader();*/
-        String className = PropertMgr.get("tankFireStrategy");
+        String className = PropertyMgr.get("tankFireStrategy");
         try {
             /*Class clazz = loader.loadClass("top.tonxin.www.strategy."+className);    //效果等同于Class.forName */
             Class clazz = Class.forName("top.tonxin.www.strategy."+className);

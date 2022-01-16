@@ -10,12 +10,12 @@ import java.util.Properties;
  * @version: 1.0
  * 配置文件目录
  */
-public class PropertMgr {
+public class PropertyMgr {
     private static Properties props ;
     static {
         try {
             props = new Properties();
-            props.load(PropertMgr.class.getClassLoader().getResourceAsStream("Config"));
+            props.load(PropertyMgr.class.getClassLoader().getResourceAsStream("Config"));
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -14,6 +14,9 @@ public class Bullet extends AbstractGameObject{
     private Dir dir;
     private Group group;
     private boolean live = true; //子弹状态
+    public static final int w = ResourceMgr.bulletU.getWidth();
+    public static final int h = ResourceMgr.bulletU.getHeight();
+    private Rectangle rect;  //碰撞rect
 
 
     public Bullet(int x, int y, Dir dir, Group group) {
@@ -21,7 +24,9 @@ public class Bullet extends AbstractGameObject{
         this.y = y;
         this.dir = dir;
         this.group = group;
+        rect = new Rectangle(x, y, w, h);
     }
+
 
     public boolean isLive() {
         return live;
@@ -47,6 +52,9 @@ public class Bullet extends AbstractGameObject{
                 break;
         }
         move();
+        //update the rect
+        rect.x = x;
+        rect.y = y;
     }
 
     private void move() {
@@ -65,7 +73,6 @@ public class Bullet extends AbstractGameObject{
                 break;
         }
         boundsCheck();
-
     }
 
     private void boundsCheck() {
@@ -82,22 +89,10 @@ public class Bullet extends AbstractGameObject{
         this.group = group;
     }
 
-    /*碰撞检测*/
-    public void collidesWithTank(Tank tank){
-        /*如果坦克挂了就直接return*/
-        if (!this.isLive() || !tank.isLive()) return;
-        /*防止自己打自己*/
-        if (this.group == tank.getGroup()) return;
-        /*碰撞检测*/
-        Rectangle rect = new Rectangle(x,y,ResourceMgr.bulletD.getWidth(),ResourceMgr.badTankD.getHeight());
-        Rectangle rectTank = new Rectangle(tank.getX(),tank.getY(),ResourceMgr.goodTankD.getWidth(),ResourceMgr.goodTankD.getHeight());
-        /*撞上就把子弹和坦克销毁*/
-        if(rect.intersects(rectTank)){
-            this.die();
-            tank.die();
-        }
-    }
 
+    public Rectangle getRect(){
+        return rect;
+    }
     /*子弹消亡*/
     public void die(){
         this.setLive(false);

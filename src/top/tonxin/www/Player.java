@@ -7,19 +7,30 @@ import java.awt.event.KeyEvent;
 
 public class Player extends AbstractGameObject{
     public static final int SPEED = 5;     //移动速度
-    private int x;
-    private int y;
+    private int x,y;
     private Dir dir;
+    private Rectangle rect;
     private boolean bL,bR,bU,bD;
     private boolean moving = false;   //移动状态
     private boolean live = true;      //坦克存活状态
+    private int oldX,oldY;
     private Group group;
+    private int width,height;
 
     public Player(int x, int y, Dir dir,Group group){
         this.x = x;
         this.y = y;
+
+        oldX = x;
+        oldY = y;
+
         this.dir = dir;
         this.group = group;
+
+        this.width = ResourceMgr.goodTankD.getWidth();
+        this.height = ResourceMgr.goodTankD.getHeight();
+
+        rect = new Rectangle(x,y,width,height);
         this.initFireStrategy();
     }
 
@@ -63,42 +74,38 @@ public class Player extends AbstractGameObject{
         this.y = y;
     }
 
+    public void back() {
+        this.x = oldX;
+        this.y = oldY;
+    }
+
     public void paint(Graphics g) {
+
+        /*Color c = g.getColor();
+        g.setColor(Color.WHITE);
+        g.drawString("x：" + this.rect.x, 10, 70);
+        g.drawString("y：" + this.rect.y, 10, 90);
+        g.setColor(c);*/
+
         if (!this.live) return;
-        if(group == Group.GOOD) {
-            switch (dir) {
-                case R:
-                    g.drawImage(ResourceMgr.goodTankR, x, y, null);
-                    break;
-                case L:
-                    g.drawImage(ResourceMgr.goodTankL, x, y, null);
-                    break;
-                case U:
-                    g.drawImage(ResourceMgr.goodTankU, x, y, null);
-                    break;
-                case D:
-                    g.drawImage(ResourceMgr.goodTankD, x, y, null);
-                    break;
-            }
-        }
-        if(group == Group.BAD) {
-            switch (dir) {
-                case R:
-                    g.drawImage(ResourceMgr.badTankR, x, y, null);
-                    break;
-                case L:
-                    g.drawImage(ResourceMgr.badTankL, x, y, null);
-                    break;
-                case U:
-                    g.drawImage(ResourceMgr.badTankU, x, y, null);
-                    break;
-                case D:
-                    g.drawImage(ResourceMgr.badTankD, x, y, null);
-                    break;
-            }
+        switch (dir) {
+            case L:
+                g.drawImage(ResourceMgr.goodTankL, x, y, null);
+                break;
+            case U:
+                g.drawImage(ResourceMgr.goodTankU, x, y, null);
+                break;
+            case R:
+                g.drawImage(ResourceMgr.goodTankR, x, y, null);
+                break;
+            case D:
+                g.drawImage(ResourceMgr.goodTankD, x, y, null);
+                break;
         }
         move();
 
+        rect.x = x;
+        rect.y = y;
     }
 
     public void keyPressed(KeyEvent e) {
@@ -162,6 +169,8 @@ public class Player extends AbstractGameObject{
 
     private void move() {
         if (!moving) return;
+        oldX = x;
+        oldY = y;
         switch (dir) {
             case L:
                 x -= SPEED;
@@ -176,6 +185,7 @@ public class Player extends AbstractGameObject{
                 y -= SPEED;
                 break;
         }
+        boundsCheck();          //边界检测
     }
 
     //读取策略模式
@@ -198,5 +208,38 @@ public class Player extends AbstractGameObject{
     /*坦克消亡*/
     public void die(){
         this.setLive(false);
+    }
+
+    public Rectangle getRect() {
+        return rect;
+    }
+
+    /*边界检测*/
+    private void boundsCheck() {
+        if (x < 0 || y < 30 || x + width > TankFrame.GAME_WIDTH || y + height > TankFrame.GAME_HEIGHT) {
+            this.back();
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Player{" +
+                "x=" + x +
+                ", y=" + y +
+                ", dir=" + dir +
+                ", rect=" + rect +
+                ", bL=" + bL +
+                ", bR=" + bR +
+                ", bU=" + bU +
+                ", bD=" + bD +
+                ", moving=" + moving +
+                ", live=" + live +
+                ", oldX=" + oldX +
+                ", oldY=" + oldY +
+                ", group=" + group +
+                ", width=" + width +
+                ", height=" + height +
+                ", strategy=" + strategy +
+                '}';
     }
 }

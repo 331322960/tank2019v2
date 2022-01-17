@@ -10,7 +10,7 @@ import java.awt.*;
  * 爆炸效果
  */
 public class Explode extends AbstractGameObject{
-    public static final int SPEED = 10;
+
     private int x,y;
     private int width,height;  //爆炸宽度高度
     private int step = 0;

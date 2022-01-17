@@ -1,7 +1,6 @@
 package top.tonxin.www;
 
 import java.awt.*;
-import java.util.BitSet;
 import java.util.Random;
 
 public class Tank extends AbstractGameObject{
@@ -9,12 +8,12 @@ public class Tank extends AbstractGameObject{
     private int x;
     private int y;
     private Dir dir;
-    Rectangle rect;
     private boolean bL,bR,bU,bD;
     private boolean moving = true;   //移动状态
     private boolean live = true;      //坦克存活状态
     private int oldX,oldY;
     private int width,height;
+    private Rectangle rect;
 
 
     public Group getGroup() {
@@ -36,9 +35,9 @@ public class Tank extends AbstractGameObject{
         oldX = x;
         oldY = y;
 
-        this.width = ResourceMgr.goodTankD.getWidth();
-        this.height = ResourceMgr.goodTankD.getHeight();
-        rect = new Rectangle(x,y,width,height);
+        this.width = ResourceMgr.badTankD.getWidth();
+        this.height = ResourceMgr.badTankD.getHeight();
+        this.rect = new Rectangle(x,y,width,height);
     }
 
     public boolean isLive() {
@@ -85,6 +84,7 @@ public class Tank extends AbstractGameObject{
 
         rect.x = x;
         rect.y = y;
+
     }
 
     private void move() {
@@ -108,14 +108,14 @@ public class Tank extends AbstractGameObject{
                 break;
         }
         boundsCheck();          //边界检测
-        randomeDir();
+        randomDir();
         if (r.nextInt(100) > 90)
             fire();
     }
 
     private Random r = new Random();
 
-    private void randomeDir() {
+    private void randomDir() {
         if (r.nextInt(100) > 90)
             this.dir = Dir.randomDir();
     }
@@ -123,13 +123,13 @@ public class Tank extends AbstractGameObject{
     private void fire(){
         int bX = x + ResourceMgr.goodTankD.getWidth()/2 - ResourceMgr.bulletD.getWidth()/2;
         int bY = y + ResourceMgr.goodTankD.getHeight()/2 - ResourceMgr.bulletD.getHeight()/2;
-        TankFrame.INSTANCE.add(new Bullet(bX,bY,dir,group));        //爆炸
+        TankFrame.INSTANCE.getGm().add(new Bullet(bX,bY,dir,group));        //爆炸
     }
 
     /*坦克消亡*/
     public void die(){
         this.setLive(false);
-        TankFrame.INSTANCE.add(new Explode(x,y));
+        TankFrame.INSTANCE.getGm().add(new Explode(x,y));
     }
 
     /*边界检测*/

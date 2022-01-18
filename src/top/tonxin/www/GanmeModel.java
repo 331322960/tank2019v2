@@ -1,8 +1,10 @@
 package top.tonxin.www;
 
+import org.junit.jupiter.api.Assertions;
 import top.tonxin.www.chainofresponsibility.ColliderChain;
 
 import java.awt.*;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +14,7 @@ import java.util.List;
  * @Description: top.tonxin.www
  * @version: 1.0
  */
-public class GanmeModel {
+public class GanmeModel implements Serializable{
     private Player myTank;
     ColliderChain chain = new ColliderChain();
     List<AbstractGameObject> objects;
@@ -32,6 +34,7 @@ public class GanmeModel {
         for (int i = 0; i < tankCount; i++) {
             this.add(new Tank(200 + 80 * i, 200, Dir.D, Group.BAD));
         }
+        this.add(myTank);
         //this.add(new Wall(150,150,400,50));
     }
     public void add(AbstractGameObject go) {
@@ -48,13 +51,18 @@ public class GanmeModel {
         //g.drawString("explodes：" + explodes.size(), 10, 90);*//*
         g.setColor(c);
 
+
         myTank.paint(g);
+        /*修复闪烁 : 死掉的先删除再开始碰撞逻辑*/
         for (int i = 0; i < objects.size(); i++) {
             if(!objects.get(i).isLive()){
                 objects.remove(i);
                 break;
             }
+        }
 
+        /*碰撞逻辑*/
+        for (int i = 0; i < objects.size(); i++) {
             AbstractGameObject go1 = objects.get(i);
             for (int j = 0; j < objects.size(); j++) {
                 AbstractGameObject go2 = objects.get(j);
@@ -67,35 +75,9 @@ public class GanmeModel {
             }
 
         }
-
-        /*for (int i = 0; i < tanks.size(); i++) {
-            if (!tanks.get(i).isLive()) {
-                tanks.remove(i);
-            } else {
-                tanks.get(i).paint(g);
-            }
-        }
-        for (int i = 0; i < bullets.size(); i++) {
-            *//*碰撞检测*//*
-            for (int j = 0; j < tanks.size(); j++) {
-                bullets.get(i).collidesWithTank(tanks.get(j));
-            }
-            if (!bullets.get(i).isLive()) {
-                bullets.remove(i);
-            } else {
-                bullets.get(i).paint(g);
-            }
-        }
-        *//*爆炸*//*
-        for (int i = 0; i < explodes.size(); i++) {
-            if (!explodes.get(i).isLive()) {
-                explodes.remove(i);
-            } else {
-                explodes.get(i).paint(g);
-            }
-        }*/
     }
     public Player getMyTank(){
         return myTank;
     }
+
 }

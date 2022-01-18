@@ -4,8 +4,7 @@ import top.tonxin.www.chainofresponsibility.ColliderChain;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.*;
 
 public class TankFrame extends Frame {
 
@@ -57,8 +56,11 @@ public class TankFrame extends Frame {
         //按键被按下
         @Override
         public void keyPressed(KeyEvent e) {
+            int key = e.getKeyCode();
+            if(key == KeyEvent.VK_S) save();
+            else if(key == KeyEvent.VK_L) load();
             //交给坦克自己处理
-            gm.getMyTank().keyPressed(e);
+            else gm.getMyTank().keyPressed(e);
         }
 
         //按键抬起
@@ -69,6 +71,33 @@ public class TankFrame extends Frame {
     }
     public GanmeModel getGm(){
         return this.gm;
+    }
+
+    private void save(){
+        try {
+            File f = new File("c:/test/a.dat");
+            FileOutputStream fos = new FileOutputStream(f);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(gm);
+            oos.flush();
+            oos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void load(){
+        try {
+
+            File f = new File("c:/test/a.dat");
+            FileInputStream fis = new FileInputStream(f);
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            this.gm  = (GanmeModel) (ois.readObject());
+            ois.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
 

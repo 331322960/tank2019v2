@@ -1,9 +1,10 @@
 package top.tonxin.www;
-import top.tonxin.www.chainofresponsibility.ColliderChain;
 
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.*;
 
 public class TankFrame extends Frame {
@@ -21,13 +22,15 @@ public class TankFrame extends Frame {
         //监听键盘
         this.addKeyListener(new TankKeyListener());
 
+        //监听窗口关闭
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                System.exit(0);
+            }
+        });
+
     }
-
-
-
-
-
-
 
     @Override
     public void paint(Graphics g) {

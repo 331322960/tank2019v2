@@ -34,7 +34,7 @@ public class GanmeModel implements Serializable{
         for (int i = 0; i < tankCount; i++) {
             this.add(new Tank(200 + 80 * i, 200, Dir.D, Group.BAD));
         }
-        this.add(myTank);
+        //this.add(myTank);
         //this.add(new Wall(150,150,400,50));
     }
     public void add(AbstractGameObject go) {

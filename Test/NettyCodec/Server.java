@@ -1,4 +1,4 @@
-package Nettychat;
+package NettyCodec;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.ByteBuf;
@@ -33,7 +33,9 @@ public class Server {
                     .childHandler(new ChannelInitializer<>() {
                         @Override
                         protected void initChannel(Channel channel) throws Exception {
-                            channel.pipeline().addLast(new MyChildHandler());
+                            channel.pipeline()
+                                    .addLast(new TankMsgDecoder())          //解码
+                                    .addLast(new ServerChildHandler());
                         }
                     })
                     .bind(8888).sync();
@@ -47,7 +49,7 @@ public class Server {
         }
     }
 
-    class MyChildHandler extends ChannelInboundHandlerAdapter {
+    class ServerChildHandler extends ChannelInboundHandlerAdapter {
         @Override
         public void channelActive(ChannelHandlerContext ctx) throws Exception {
             //已经链接的时候拿到对应的channel进行保存
@@ -56,22 +58,9 @@ public class Server {
 
         @Override
         public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-            ByteBuf buf = null;
-            buf = (ByteBuf)msg;
-            byte[] bytes = new byte[buf.readableBytes()];
-            buf.getBytes(buf.readerIndex(), bytes);
-            String str = new String(bytes);
-            if (str.equals("__bye__")){
-                System.out.println("Client ready to quit !");
-                System.out.println(clients.size());           //查看多少个引用指向
-                clients.remove(ctx.channel());
-                ctx.close();
-            }else {
-                clients.writeAndFlush(buf);
-            }
-            /*System.out.println(str);
-            //查看多少个引用指向
-            System.out.println(buf.refCnt());*/
+            //System.out.println(msg);
+            TankMsg tm = (TankMsg)msg;
+            ServerFrame.INSTANCE.updateClientMsg(msg.toString());
         }
 
         @Override

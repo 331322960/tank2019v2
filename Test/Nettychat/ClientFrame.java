@@ -54,6 +54,6 @@ public class ClientFrame extends Frame {
     }
 
     public void updateText(String str) {
-        ta.setText(ta.getText() + str + "\r\n");
+        ta.setText(ta.getText() + str + System.getProperty("line.separator"));
     }
 }

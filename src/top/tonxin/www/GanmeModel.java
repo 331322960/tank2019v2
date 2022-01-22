@@ -7,6 +7,8 @@ import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+import java.util.UUID;
 
 /**
  * @Auther: ZHAO
@@ -19,13 +21,16 @@ public class GanmeModel implements Serializable{
     ColliderChain chain = new ColliderChain();
     List<AbstractGameObject> objects;
 
+    Random r = new Random();
     public GanmeModel() {
         initGameObjects();
     }
     /*初始化*/
     private void initGameObjects() {
         //玩家
-        myTank = new Player(100, 100, Dir.D, Group.GOOD);
+        myTank = new Player(50 + r.nextInt(700), 50 + r.nextInt(500),
+                Dir.values()[r.nextInt(Dir.values().length)],
+                Group.values()[r.nextInt(Group.values().length)]);
         //从配置文件读取
         objects = new ArrayList<>();
         //this.add(myTank);
@@ -80,4 +85,14 @@ public class GanmeModel implements Serializable{
         return myTank;
     }
 
+    public Tank findTankUUID(UUID id) {
+        for (AbstractGameObject o : objects){
+            if (o instanceof Tank){
+                Tank t = (Tank)o;
+                if (id.equals(t.getId()))
+                    return t;
+            }
+        }
+        return null;
+    }
 }

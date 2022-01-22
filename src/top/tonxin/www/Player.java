@@ -4,6 +4,7 @@ import top.tonxin.www.strategy.FireStrategy;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.util.UUID;
 
 public class Player extends AbstractGameObject{
     public static final int SPEED = 5;     //移动速度
@@ -16,6 +17,8 @@ public class Player extends AbstractGameObject{
     private int oldX,oldY;
     private Group group;
     private int width,height;
+
+    private UUID id = UUID.randomUUID();
 
     public Player(int x, int y, Dir dir,Group group){
         this.x = x;
@@ -40,6 +43,18 @@ public class Player extends AbstractGameObject{
 
     public void setDir(Dir dir) {
         this.dir = dir;
+    }
+
+    public boolean isMoving() {
+        return moving;
+    }
+
+    public void setMoving(boolean moving) {
+        this.moving = moving;
+    }
+
+    public UUID getId() {
+        return id;
     }
 
     public Group getGroup() {
@@ -88,6 +103,12 @@ public class Player extends AbstractGameObject{
         g.setColor(c);*/
 
         if (!this.live) return;
+
+        Color c = g.getColor();
+        g.setColor(Color.YELLOW);
+        g.drawString(id.toString(),x,y-10);
+        g.setColor(c);
+
         switch (dir) {
             case L:
                 g.drawImage(ResourceMgr.goodTankL, x, y, null);

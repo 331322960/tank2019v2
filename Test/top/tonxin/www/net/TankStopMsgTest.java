@@ -9,9 +9,9 @@ import top.tonxin.www.Dir;
 import top.tonxin.www.Group;
 import top.tonxin.www.Player;
 
-
 import java.util.UUID;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @Auther: S10711
@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * @Description: top.tonxin.www.net
  * @version: 1.0
  */
-class TankJoinMsgTest {
+class TankStopMsgTest {
 
     @Test
     void encode() {
@@ -27,24 +27,22 @@ class TankJoinMsgTest {
 
         ch.pipeline().addLast(new MsgEncoder());        //加入编码器
 
-        TankStartMovingMsg msg = new TankStartMovingMsg(UUID.randomUUID(),50,100,Dir.D);
+        TankStopMsg msg = new TankStopMsg(UUID.randomUUID(),50,100);
 
         ch.writeOutbound(msg);
-        ByteBuf buf = ch.readOutbound();
 
+        ByteBuf buf = ch.readOutbound();
         MsgType msgType = MsgType.values()[buf.readInt()];
         int length = buf.readInt();
 
         UUID uuid = new UUID(buf.readLong(),buf.readLong());
         int x = buf.readInt();
         int y = buf.readInt();
-        Dir dir = Dir.values()[buf.readInt()];
-
-        assertEquals(MsgType.TankStartMoving,msgType);
-        assertEquals(28,length);
+        assertEquals(MsgType.TankStop,msgType);
+        assertEquals(24,length);
         assertEquals(50,x);
         assertEquals(100,y);
-        assertEquals(Dir.D,dir);
+        assertEquals(msg.getId(),uuid);
 
     }
 
@@ -56,22 +54,20 @@ class TankJoinMsgTest {
         UUID id = UUID.randomUUID();
 
         ByteBuf buf = Unpooled.buffer();
-        buf.writeInt(MsgType.TankStartMoving.ordinal());
-        buf.writeInt(28);
+        buf.writeInt(MsgType.TankStop.ordinal());
+        buf.writeInt(24);
         buf.writeLong(id.getMostSignificantBits());
         buf.writeLong(id.getLeastSignificantBits());
         buf.writeInt(5);
         buf.writeInt(8);
-        buf.writeInt(Dir.D.ordinal());
 
         ch.writeInbound(buf);
 
-        TankStartMovingMsg tm = ch.readInbound();
+        TankStopMsg msg = ch.readInbound();
 
-        assertEquals(5,tm.getX());
-        assertEquals(8,tm.getY());
-        assertEquals(Dir.D,tm.getDir());
-        assertEquals(id,tm.getId());
+        assertEquals(id,msg.getId());
+        assertEquals(5,msg.getX());
+        assertEquals(8,msg.getY());
 
     }
 }

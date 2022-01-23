@@ -1,5 +1,8 @@
 package top.tonxin.www;
 
+import top.tonxin.www.net.Client;
+import top.tonxin.www.net.TankStartMovingMsg;
+import top.tonxin.www.net.TankStopMsg;
 import top.tonxin.www.strategy.FireStrategy;
 
 import java.awt.*;
@@ -171,9 +174,15 @@ public class Player extends AbstractGameObject{
     }
 
     private void setMainDir() {
+
+        boolean oldMoving = moving;
+
         //没有按键按下为flase
-        if (!bL && !bU && !bD && !bR)
+        if (!bL && !bU && !bD && !bR){
             moving = false;
+            //发送停止信息
+            Client.INSTANCE.send(new TankStopMsg(this.id,this.x,this.y));
+        }
         else {
             moving = true;
             if (bL && !bU && !bD && !bR)
@@ -184,6 +193,8 @@ public class Player extends AbstractGameObject{
                 dir = Dir.D;
             if (!bL && !bU && !bD && bR)
                 dir = Dir.R;
+            if (!oldMoving)Client .INSTANCE.send(new TankStartMovingMsg(this.id,this.x,this.y,this.dir));
+
         }
 
     }

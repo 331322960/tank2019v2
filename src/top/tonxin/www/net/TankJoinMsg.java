@@ -11,7 +11,7 @@ import java.util.UUID;
  * @Description: top.tonxin.www.net
  * @version: 1.0
  */
-public class TankJoinMsg {
+public class TankJoinMsg extends Msg{
     private int x,y;
     private Dir dir;
     private boolean moving;
@@ -48,6 +48,9 @@ public class TankJoinMsg {
             dos.writeLong(id.getLeastSignificantBits());    //写低位数据
             dos.flush();
             bytes = baos.toByteArray();
+            /*for (byte aByte : bytes) {
+                System.out.print(aByte +",");
+            }*/
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -153,5 +156,10 @@ public class TankJoinMsg {
         TankFrame.INSTANCE.getGm().add(t);
 
         Client.INSTANCE.send(new TankJoinMsg(TankFrame.INSTANCE.getGm().getMyTank()));
+    }
+
+    @Override
+    public MsgType getMsgType() {
+        return MsgType.TankJoin;
     }
 }

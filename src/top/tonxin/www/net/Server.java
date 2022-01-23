@@ -61,7 +61,7 @@ public class Server {
         public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
             //System.out.println(msg.toString());
             //TankMsg tm = (TankMsg)msg;
-            //ServerFrame.INSTANCE.updateClientMsg(msg.toString());
+            ServerFrame.INSTANCE.updateClientMsg(msg.toString());
             clients.writeAndFlush(msg);
 
         }

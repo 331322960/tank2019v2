@@ -20,6 +20,14 @@ public class Tank extends AbstractGameObject {
     private Rectangle rect;
     private UUID id;
 
+    public void setDir(Dir dir) {
+        this.dir = dir;
+    }
+
+    public void setMoving(boolean moving) {
+        this.moving = moving;
+    }
+
     public Tank(TankJoinMsg msg) {
         this.x = msg.getX();
         this.y = msg.getY();
@@ -134,9 +142,9 @@ public class Tank extends AbstractGameObject {
                 break;
         }
         boundsCheck();          //边界检测
-        randomDir();
-        if (r.nextInt(100) > 90)
-            fire();
+        //randomDir();
+        /*if (r.nextInt(100) > 90)
+            fire();*/
     }
 
     private Random r = new Random();

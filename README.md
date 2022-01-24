@@ -2,6 +2,10 @@
 
 马士兵Tank项目
 
+运行环境
+
+`IEDA JDK11 + NETTY4.1.9 + Junit5.4`
+
 
 `Config`配置说明：
 

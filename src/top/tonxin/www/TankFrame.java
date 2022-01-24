@@ -1,11 +1,15 @@
 package top.tonxin.www;
 
+import top.tonxin.www.net.Client;
+import top.tonxin.www.net.TankDieMsg;
+
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.*;
+import java.util.UUID;
 
 public class TankFrame extends Frame {
 
@@ -26,6 +30,8 @@ public class TankFrame extends Frame {
         this.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
+                //退出死亡
+                Client.INSTANCE.send(new TankDieMsg(INSTANCE.getGm().getMyTank().getId(), UUID.randomUUID()));
                 System.exit(0);
             }
         });

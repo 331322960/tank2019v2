@@ -238,12 +238,15 @@ public class Player extends AbstractGameObject{
         }
     }
     private void fire(){
-        strategy.fire(this);
+        if (live){
+            strategy.fire(this);
+        }
     }
 
     /*坦克消亡*/
     public void die(){
         this.setLive(false);
+        TankFrame.INSTANCE.getGm().add(new Explode(x, y));  //爆炸效果
     }
 
     public Rectangle getRect() {

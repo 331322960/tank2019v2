@@ -1,6 +1,8 @@
 package top.tonxin.www.strategy;
 
 import top.tonxin.www.*;
+import top.tonxin.www.net.BulletNewMsg;
+import top.tonxin.www.net.Client;
 
 /**
  * @Auther: ZHAO
@@ -15,6 +17,9 @@ public class DefaultFireStrategy implements FireStrategy{
         int bY = p.getY() + ResourceMgr.goodTankD.getHeight()/2 - ResourceMgr.bulletD.getHeight()/2;
 //        Dir dirs = Dir.values();
 //        for(Dir d : dirs);
-        TankFrame.INSTANCE.getGm().add(new Bullet(bX,bY,p.getDir(),p.getGroup()));
+        Bullet b = new Bullet(p.getId(),bX,bY,p.getDir(),p.getGroup());
+        TankFrame.INSTANCE.getGm().add(b);
+
+        Client.INSTANCE.send(new BulletNewMsg(b));
     }
 }

@@ -7,5 +7,5 @@ package top.tonxin.www.net;
  * @version: 1.0
  */
 public enum MsgType {
-    TankJoin,TankStartMoving,TankStop
+    TankJoin,TankStartMoving,TankStop,BulletNew,TankMoveOrDirChange,TankDie
 }

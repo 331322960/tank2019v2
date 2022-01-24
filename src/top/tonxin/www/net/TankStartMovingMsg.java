@@ -1,7 +1,6 @@
 package top.tonxin.www.net;
 
 import top.tonxin.www.Dir;
-import top.tonxin.www.Group;
 import top.tonxin.www.Tank;
 import top.tonxin.www.TankFrame;
 
@@ -118,7 +117,7 @@ public class TankStartMovingMsg extends Msg{
     public void handle() {
         if (this.id.equals(TankFrame.INSTANCE.getGm().getMyTank().getId()))
             return;
-        Tank t = TankFrame.INSTANCE.getGm().findTankUUID(this.id);
+        Tank t = TankFrame.INSTANCE.getGm().findTankByUUID(this.id);
         if (t != null){
             t.setMoving(true);
             t.setX(this.x);

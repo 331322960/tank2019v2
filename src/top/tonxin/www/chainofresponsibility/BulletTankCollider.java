@@ -4,6 +4,8 @@ import top.tonxin.www.AbstractGameObject;
 import top.tonxin.www.Bullet;
 import top.tonxin.www.ResourceMgr;
 import top.tonxin.www.Tank;
+import top.tonxin.www.net.Client;
+import top.tonxin.www.net.TankDieMsg;
 
 import java.awt.*;
 
@@ -32,6 +34,9 @@ public class BulletTankCollider implements Collider{
                     if (b.getRect().intersects(rectTank)) {
                         b.die();
                         t.die();
+
+                        //发送
+                        Client.INSTANCE.send(new TankDieMsg(t.getId(), b.getId()));
                         return false;
                     }
                 }

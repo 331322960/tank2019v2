@@ -1,5 +1,6 @@
 package top.tonxin.www.net;
 
+import top.tonxin.www.Dir;
 import top.tonxin.www.Tank;
 import top.tonxin.www.TankFrame;
 
@@ -12,9 +13,10 @@ import java.util.UUID;
  * @Description: top.tonxin.www.net
  * @version: 1.0
  */
-public class TankStopMsg extends Msg{
+public class TankMoveOrDirChangeMsg extends Msg{
     private UUID id;
     private int x, y;
+    private Dir dir;
 
 
     public UUID getId() {
@@ -41,13 +43,22 @@ public class TankStopMsg extends Msg{
         this.y = y;
     }
 
-    public TankStopMsg() {
+    public Dir getDir() {
+        return dir;
     }
 
-    public TankStopMsg(UUID id, int x, int y) {
+    public void setDir(Dir dir) {
+        this.dir = dir;
+    }
+
+    public TankMoveOrDirChangeMsg() {
+    }
+
+    public TankMoveOrDirChangeMsg(UUID id, int x, int y, Dir dir) {
         this.id = id;
         this.x = x;
         this.y = y;
+        this.dir = dir;
     }
 
     @Override
@@ -64,6 +75,7 @@ public class TankStopMsg extends Msg{
             dos.writeLong(id.getLeastSignificantBits());    //写低位数据
             dos.writeInt(x);
             dos.writeInt(y);
+            dos.writeInt(dir.ordinal());
             dos.flush();
             bytes = baos.toByteArray();
 
@@ -89,6 +101,7 @@ public class TankStopMsg extends Msg{
             this.id = new UUID(dis.readLong(),dis.readLong());
             this.x = dis.readInt();
             this.y = dis.readInt();
+            this.dir = Dir.values()[dis.readInt()];
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -109,21 +122,23 @@ public class TankStopMsg extends Msg{
             t.setMoving(false);
             t.setX(this.x);
             t.setY(this.y);
+            t.setDir(this.dir);
         }
 
     }
 
     @Override
     public MsgType getMsgType() {
-        return MsgType.TankStop;
+        return MsgType.TankMoveOrDirChange;
     }
 
     @Override
     public String toString() {
-        return "TankStopMsg{" +
+        return "TankMoveOrDirChangeMsg{" +
                 "id=" + id +
                 ", x=" + x +
                 ", y=" + y +
+                ", dir=" + dir +
                 '}';
     }
 }

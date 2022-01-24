@@ -176,7 +176,7 @@ public class Player extends AbstractGameObject{
     private void setMainDir() {
 
         boolean oldMoving = moving;
-
+        Dir oldDir = this.getDir();
         //没有按键按下为flase
         if (!bL && !bU && !bD && !bR){
             moving = false;
@@ -193,7 +193,11 @@ public class Player extends AbstractGameObject{
                 dir = Dir.D;
             if (!bL && !bU && !bD && bR)
                 dir = Dir.R;
-            if (!oldMoving)Client .INSTANCE.send(new TankStartMovingMsg(this.id,this.x,this.y,this.dir));
+            if (!oldMoving)
+                Client .INSTANCE.send(new TankStartMovingMsg(this.id,this.x,this.y,this.dir));
+            //处理按键不同步的BUG，改变方向时发生一个数据出去
+            if (!this.dir.equals(oldDir))
+                Client .INSTANCE.send(new TankStartMovingMsg(this.id,this.x,this.y,this.dir));
 
         }
 

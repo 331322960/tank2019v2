@@ -1,5 +1,4 @@
 package top.tonxin.www.net;
-import NettyCodec.TankMsgEncoder;
 import top.tonxin.www.*;
 
 import java.io.*;
@@ -152,7 +151,7 @@ public class TankJoinMsg extends Msg{
         if (this.id.equals(TankFrame.INSTANCE.getGm().getMyTank().getId())) return;
 
         Tank t = new Tank(this);
-        if (TankFrame.INSTANCE.getGm().findTankUUID(this.id) != null) return;
+        if (TankFrame.INSTANCE.getGm().findTankByUUID(this.id) != null) return;
         TankFrame.INSTANCE.getGm().add(t);
 
         Client.INSTANCE.send(new TankJoinMsg(TankFrame.INSTANCE.getGm().getMyTank()));

@@ -85,7 +85,7 @@ public class GanmeModel implements Serializable{
         return myTank;
     }
 
-    public Tank findTankUUID(UUID id) {
+    public Tank findTankByUUID(UUID id) {
         for (AbstractGameObject o : objects){
             if (o instanceof Tank){
                 Tank t = (Tank)o;
@@ -93,6 +93,18 @@ public class GanmeModel implements Serializable{
                     return t;
             }
         }
+        return null;
+    }
+
+
+    public Bullet findBulletByUUID(UUID bulletId) {
+        for(AbstractGameObject o : objects) {
+            if(o instanceof Bullet) {
+                Bullet b = (Bullet)o;
+                if(bulletId.equals(b.getId())) return b;
+            }
+        }
+
         return null;
     }
 }

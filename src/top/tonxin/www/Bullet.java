@@ -1,6 +1,7 @@
 package top.tonxin.www;
 
 import java.awt.*;
+import java.util.UUID;
 
 /**
  * @Auther: ZHAO
@@ -17,16 +18,46 @@ public class Bullet extends AbstractGameObject{
     public static final int w = ResourceMgr.bulletU.getWidth();
     public static final int h = ResourceMgr.bulletU.getHeight();
     private Rectangle rect;  //碰撞rect
+    private UUID id = UUID.randomUUID();
+    private UUID playerId;
 
-
-    public Bullet(int x, int y, Dir dir, Group group) {
+    public Bullet(UUID playerId,int x, int y, Dir dir, Group group) {
+        this.playerId = playerId;
         this.x = x;
         this.y = y;
         this.dir = dir;
         this.group = group;
+
         rect = new Rectangle(x, y, w, h);
     }
 
+    public static int getSPEED() {
+        return SPEED;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public Dir getDir() {
+        return dir;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public UUID getPlayerId() {
+        return playerId;
+    }
 
     public boolean isLive() {
         return live;
